@@ -21,3 +21,11 @@ jobs:
     - name: Analysing the code with pylint
       run: |
         pylint $(git ls-files '*.py')
+  after_build:
+    runs-on: ubuntu-latest
+    steps:
+    - name: do something after build
+      run: |
+        echo "HELLO!"
+        echo `ls -al`
+      
