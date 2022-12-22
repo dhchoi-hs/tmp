@@ -23,9 +23,15 @@ jobs:
         pylint $(git ls-files '*.py')
   after_build:
     runs-on: ubuntu-latest
+    needs: build
     steps:
     - name: do something after build
       run: |
         echo "HELLO!"
         echo `ls -al`
-      
+  parallel_build:
+    runs-on: ubuntu-latest
+    steps:
+    - name: do something
+      run: |
+        git ls-files
