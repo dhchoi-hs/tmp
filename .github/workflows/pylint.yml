@@ -32,6 +32,10 @@ jobs:
   parallel_build:
     runs-on: ubuntu-latest
     steps:
+    - uses: actions/checkout@v3
     - name: do something
       run: |
         git ls-files
+    - name: do something2
+      run: |
+        git config --list
