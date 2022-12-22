@@ -7,7 +7,7 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        python-version: ["3.8", "3.9", "3.10"]
+        python-version: ["3.9"]
     steps:
     - uses: actions/checkout@v3
     - name: Set up Python ${{ matrix.python-version }}
@@ -32,6 +32,10 @@ jobs:
   parallel_build:
     runs-on: ubuntu-latest
     steps:
+    - name: tmp
+      run: |
+        ls -ltr
+        pwd
     - uses: actions/checkout@v3
     - name: do something
       run: |
