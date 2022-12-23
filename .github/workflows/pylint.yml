@@ -40,11 +40,20 @@ jobs:
     - name: do something
       run: |
         git ls-files
-    - name: do something2
+    - name: set git config
       run: |
+        git config --list
+        git config --local user.name "${{github.actor}}"
+        git config --local user.email "${{github.actor}}@users.noreply.github.com"
         git config --list
     - name: get files
       run: |
         ls -hltr
         ls -hltr *
         pwd
+    - name: commit a file
+      run: |
+        echo "This message from git actions.\n" >> msg.txt
+        git add msg.txt
+        git commit -m "commit from git actions"
+        git push
