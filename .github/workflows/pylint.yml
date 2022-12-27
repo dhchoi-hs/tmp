@@ -21,7 +21,7 @@ jobs:
     - name: Analysing the code with pylint
       run: |
         pylint $(git ls-files '*.py')
-      continue-on-error: true
+      continue-on-error: false
   after_build:
     runs-on: ubuntu-latest
     needs: build
