@@ -56,5 +56,5 @@ jobs:
       run: |
         echo "This message from git actions.\n" >> msg.txt
         git add msg.txt
-        git commit -m "commit from git actions"
+        # git commit -m "commit from git actions"
         git push
