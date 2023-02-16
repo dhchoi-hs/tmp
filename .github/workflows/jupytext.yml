@@ -21,6 +21,7 @@ jobs:
       run: |
         echo $GITHUB_ENV
         mkdir ${{env.TEMP_DIR}}
+        git ls-files "*.ipynb" --with-tree=${{github.sha}}
         COMMITTED_IPYNBS=`git ls-files "*.ipynb" --with-tree=${{github.sha}}`
         echo ${COMMITTED_IPYNBS}
         echo ${COMMITTED_IPYNBS} | while read p; do
