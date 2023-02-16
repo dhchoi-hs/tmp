@@ -16,7 +16,7 @@ jobs:
         pip install pylint
     - name: Convert committed .ipynb files to .py
       run: |
-        TEMP_DIR=TMP_PY_FILES
+        TEMP_DIR=tmp_dir
         mkdir ${TEMP_DIR}
         COMMITTED_IPYNBS=`git ls-files "*.ipynb" --with-tree=${{github.sha}}`
         echo ${COMMITTED_IPYNBS} | while read p; do
@@ -27,3 +27,8 @@ jobs:
         done
         ls -hltr
         ls -hltr ${TEMP_DIR}
+      continue-on-error: true
+    - name: ENV var test
+      run: |
+        echo $TEMP_DIR
+        echo $PY_FILE
