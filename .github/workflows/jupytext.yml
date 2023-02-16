@@ -21,10 +21,10 @@ jobs:
       run: |
         echo $GITHUB_ENV
         mkdir ${{env.TEMP_DIR}}
-        git ls-files "*.ipynb" --with-tree=${{github.sha}}
+        # git ls-files "*.ipynb" --with-tree=${{github.sha}}
         COMMITTED_IPYNBS=`git ls-files "*.ipynb" --with-tree=${{github.sha}}`
-        echo ${COMMITTED_IPYNBS}
-        echo ${COMMITTED_IPYNBS} | while read p; do
+        # echo "${COMMITTED_IPYNBS}
+        echo "${COMMITTED_IPYNBS}" | while read p; do
           echo ${p}
           PY_FILE=${{env.TEMP_DIR}}/${p//.ipynb/.py}
           echo Convert ${p} to ${PY_FILE}
