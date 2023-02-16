@@ -20,17 +20,17 @@ jobs:
     - name: Convert committed .ipynb files to .py
       run: |
         echo $GITHUB_ENV
+        TMP_FILES=
         mkdir ${{env.TEMP_DIR}}
-        # git ls-files "*.ipynb" --with-tree=${{github.sha}}
         COMMITTED_IPYNBS=`git ls-files "*.ipynb" --with-tree=${{github.sha}}`
-        # echo "${COMMITTED_IPYNBS}
         echo "${COMMITTED_IPYNBS}" | while read p; do
           echo ${p}
           PY_FILE=${{env.TEMP_DIR}}/${p//.ipynb/.py}
           echo Convert "${p}" to "${PY_FILE}"
           jupytext "${p}" -o "${PY_FILE}"
-          echo "CONVERTED_PY_FILES=${{env.CONVERTED_PY_FILES}}${PY_FILE}" >> $GITHUB_ENV
+          TMP_FILES="${TEMP_FILES}${PY_FILE}\n"
         done
+        echo "CONVERTED_PY_FILES=${TMP_FILES}" >> $GITHUB_ENV
         ls -hltr
         ls -hltr ${{env.TEMP_DIR}}
         echo GITHUB_ENV: $GITHUB_ENV
