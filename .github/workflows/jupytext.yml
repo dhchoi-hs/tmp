@@ -5,6 +5,9 @@ on: [push]
 jobs:
   do:
     runs-on: ubuntu-20.04
+    env:
+      TEMP_DIR: tmp_dir
+      CONVERTED_PY_FILES: 
     steps:
     - uses: actions/checkout@v3
     - uses: actions/setup-python@v3
@@ -16,17 +19,18 @@ jobs:
         pip install pylint
     - name: Convert committed .ipynb files to .py
       run: |
-        TEMP_DIR=tmp_dir
-        mkdir ${TEMP_DIR}
+        # TEMP_DIR=tmp_dir
+        mkdir ${{env.TEMP_DIR}}
         COMMITTED_IPYNBS=`git ls-files "*.ipynb" --with-tree=${{github.sha}}`
         echo ${COMMITTED_IPYNBS} | while read p; do
-          PY_FILE=${TEMP_DIR}/${p//.ipynb/.py}
+          PY_FILE=${{env.TEMP_DIR}}/${p//.ipynb/.py}
           echo Convert ${p} to ${PY_FILE}
           jupytext ${p} -o ${PY_FILE}
+          ${{env.CONVERTED_PY_FILES}} = "${{env.CONVERTED_PY_FILES}}${PY_FILE}\n"
         done
         ls -hltr
-        ls -hltr ${TEMP_DIR}
+        ls -hltr ${{env.TEMP_DIR}}
     - name: ENV var test
       run: |
-        echo $TEMP_DIR
-        echo $PY_FILE
+        echo ${{env.TEMP_DIR}}
+        echo ${{env.CONVERTED_PY_FILES}}
