@@ -35,6 +35,6 @@ jobs:
     - name: Run pylint each converted .py files
       run: |
         while read -r p; do
-          pylint ${p}
+          pylint "${p}"
         done <<< "${{env.CONVERTED_PY_FILES}}"
       continue-on-error: true
