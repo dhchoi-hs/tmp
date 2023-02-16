@@ -18,7 +18,7 @@ jobs:
         TEMP_DIR=TMP_PY_FILES
         mkdir ${TEMP_DIR}
         COMMITTED_IPYNBS=`git ls-files "*.ipynb" --with-tree=${{github.sha}}`
-        ${COMMITTED_IPYNBS} | while read p; do
+        echo ${COMMITTED_IPYNBS} | while read p; do
           echo ${p}
           jupytext ${p} --to py
         done
