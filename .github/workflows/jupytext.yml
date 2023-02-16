@@ -27,8 +27,8 @@ jobs:
         echo "${COMMITTED_IPYNBS}" | while read p; do
           echo ${p}
           PY_FILE=${{env.TEMP_DIR}}/${p//.ipynb/.py}
-          echo Convert ${p} to ${PY_FILE}
-          jupytext ${p} -o ${PY_FILE}
+          echo Convert "${p}" to "${PY_FILE}"
+          jupytext "${p}" -o "${PY_FILE}"
           echo "CONVERTED_PY_FILES=${{env.CONVERTED_PY_FILES}}${PY_FILE}" >> $GITHUB_ENV
         done
         ls -hltr
