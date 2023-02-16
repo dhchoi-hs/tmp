@@ -24,6 +24,10 @@ jobs:
         COMMITTED_IPYNBS=`git diff-tree --no-commit-id --name-only -r --diff-filter=ACM ${{github.sha}}`
         
         while read -r IPYNB_FILE; do
+          if [[ ${IPYNB_FILE}} != *.ipynb ]]
+          then
+            continue
+          fi
           PY_FILE=${{env.TEMP_DIR}}/${IPYNB_FILE//.ipynb/.py}
           echo Convert "${IPYNB_FILE}" to "${PY_FILE}"
           jupytext "${IPYNB_FILE}" -o "${PY_FILE}"
