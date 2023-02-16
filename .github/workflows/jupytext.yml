@@ -26,7 +26,7 @@ jobs:
           PY_FILE=${{env.TEMP_DIR}}/${p//.ipynb/.py}
           echo Convert ${p} to ${PY_FILE}
           jupytext ${p} -o ${PY_FILE}
-          echo "env.CONVERTED_PY_FILES=${{env.CONVERTED_PY_FILES}}${PY_FILE}\n" >> $GITHUB_ENV
+          echo "CONVERTED_PY_FILES=${{env.CONVERTED_PY_FILES}}${PY_FILE}\n" >> $GITHUB_ENV
         done
         ls -hltr
         ls -hltr ${{env.TEMP_DIR}}
