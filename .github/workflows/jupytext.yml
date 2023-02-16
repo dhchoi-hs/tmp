@@ -22,19 +22,13 @@ jobs:
         echo $GITHUB_ENV
         mkdir ${{env.TEMP_DIR}}
         COMMITTED_IPYNBS=`git ls-files "*.ipynb" --with-tree=${{github.sha}}`
-        echo "${COMMITTED_IPYNBS}" | while read p; do
-          echo ${p}
+        while read -r p; do
           PY_FILE=${{env.TEMP_DIR}}/${p//.ipynb/.py}
           echo Convert "${p}" to "${PY_FILE}"
           jupytext "${p}" -o "${PY_FILE}"
           TMP_FILES="${TMP_FILES}${PY_FILE}"$'\n'
-          echo "${TMP_FILES}"
-          TMP_FILES=$((TMP_FILES))
-        done
-        echo "${TMP_FILES}"
+        done <<< "${COMMITTED_IPYNBS}"
         echo "CONVERTED_PY_FILES=${TMP_FILES}" >> $GITHUB_ENV
-        ls -hltr
-        ls -hltr ${{env.TEMP_DIR}}
         echo GITHUB_ENV: $GITHUB_ENV
     - name: ENV var test
       run: |
