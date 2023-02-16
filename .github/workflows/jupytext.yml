@@ -28,7 +28,8 @@ jobs:
           jupytext "${p}" -o "${PY_FILE}"
           TMP_FILES="${TMP_FILES}${PY_FILE}"$'\n'
         done <<< "${COMMITTED_IPYNBS}"
-        echo "CONVERTED_PY_FILES=${TMP_FILES}" >> $GITHUB_ENV
+        echo "CONVERTED_PY_FILES<<EOF" >> $GITHUB_ENV
+        echo "${TMP_FILES}" >> $GITHUB_ENV
         echo "EOF" >> $GITHUB_ENV
         echo GITHUB_ENV: $GITHUB_ENV
     - name: ENV var test
