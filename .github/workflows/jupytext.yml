@@ -4,7 +4,7 @@ on: [push]
 
 jobs:
   do:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-20.04
     steps:
     - uses: actions/checkout@v3
     - uses: actions/setup-python@v3
@@ -19,7 +19,10 @@ jobs:
         mkdir ${TEMP_DIR}
         COMMITTED_IPYNBS=`git ls-files "*.ipynb" --with-tree=${{github.sha}}`
         echo ${COMMITTED_IPYNBS} | while read p; do
-          echo ${p}
-          jupytext ${p} --to py
+          PY_FILE=${TEMP_DIR}/${p//.ipynb/.py}
+          echo Convert ${p} to ${PY_FILE}
+          jupytext ${p} -o ${PY_FILE}
+          cat ${PY_FILE}
         done
         ls -hltr
+        ls -hltr ${TEMP_DIR}
