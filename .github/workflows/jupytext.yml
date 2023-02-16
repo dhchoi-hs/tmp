@@ -1,0 +1,25 @@
+name: jupytext
+
+on: [push]
+
+jobs:
+  do:
+    runs-on: ubuntu-latest
+  steps:
+  - uses: actions:checkout@v3
+  - uses: actions/setup-python@v3
+    with:
+      python-version: "3.10"
+  - name: Install dependencies
+  run: |
+    pip install jupytext
+  - name: Convert committed .ipynb files to .py
+    run: |
+      TEMP_DIR=TMP_PY_FILES
+      mkdir ${TEMP_DIR}
+      COMMITTED_IPYNBS=`git ls-files "*.ipynb" --with-tree=${{github.sha}}`
+      ${COMMITTED_IPYNBS} | while read p; do
+        echo ${p}
+        jupytext ${p} --to py
+      done
+    ls -hltr
