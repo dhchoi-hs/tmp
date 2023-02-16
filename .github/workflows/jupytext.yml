@@ -13,6 +13,7 @@ jobs:
     - name: Install dependencies
       run: |
         pip install jupytext
+        pip install pylint
     - name: Convert committed .ipynb files to .py
       run: |
         TEMP_DIR=TMP_PY_FILES
@@ -22,7 +23,7 @@ jobs:
           PY_FILE=${TEMP_DIR}/${p//.ipynb/.py}
           echo Convert ${p} to ${PY_FILE}
           jupytext ${p} -o ${PY_FILE}
-          cat ${PY_FILE}
+          pylint ${PY_FILE}
         done
         ls -hltr
         ls -hltr ${TEMP_DIR}
