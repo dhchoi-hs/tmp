@@ -6,7 +6,7 @@ jobs:
   do:
     runs-on: ubuntu-20.04
     env:
-      TEMP_DIR: tmp_dir
+      TEMP_DIR: _tmp_dir
       CONVERTED_PY_FILES: 
     steps:
     - uses: actions/checkout@v3
@@ -21,23 +21,24 @@ jobs:
       run: |
         echo $GITHUB_ENV
         mkdir ${{env.TEMP_DIR}}
-        COMMITTED_IPYNBS=`git ls-files "*.ipynb" --with-tree=${{github.sha}}`
-        while read -r p; do
-          PY_FILE=${{env.TEMP_DIR}}/${p//.ipynb/.py}
-          echo Convert "${p}" to "${PY_FILE}"
-          jupytext "${p}" -o "${PY_FILE}"
+        COMMITTED_IPYNBS=`git diff-tree --no-commit-id --name-only -r --diff-filter=ACM ${{github.sha}}`
+        
+        while read -r IPYNB_FILE; do
+          PY_FILE=${{env.TEMP_DIR}}/${IPYNB_FILE//.ipynb/.py}
+          echo Convert "${IPYNB_FILE}" to "${PY_FILE}"
+          jupytext "${IPYNB_FILE}" -o "${PY_FILE}"
           TMP_FILES="${TMP_FILES}${PY_FILE}"$'\n'
         done <<< "${COMMITTED_IPYNBS}"
 
         echo "CONVERTED_PY_FILES<<EOF" >> $GITHUB_ENV
         echo "${TMP_FILES}" >> $GITHUB_ENV
         echo "EOF" >> $GITHUB_ENV
-    - name: Run pylint each converted .py files
+    - name: Run pylint to each converted .py files
       run: |
-        while read -r p; do
-          if [ ! -z "${p}" ]
+        while read -r PY_FILE; do
+          if [ ! -z "${PY_FILE}" ]
           then
             # --exit-zero argument for preventing to stop this step.
-            pylint --exit-zero "${p}"
+            pylint --exit-zero "${PY_FILE}"
           fi
         done <<< "${{env.CONVERTED_PY_FILES}}"
