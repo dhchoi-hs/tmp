@@ -35,7 +35,7 @@ jobs:
     - name: Run pylint each converted .py files
       run: |
         while read -r p; do
-          if [ ! -z ${p} ]
+          if [ ! -z "${p}" ]
           then
             # --exit-zero argument for preventing to stop this step.
             pylint --exit-zero "${p}"
