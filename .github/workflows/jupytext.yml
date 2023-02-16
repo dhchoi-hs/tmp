@@ -21,6 +21,8 @@ jobs:
       run: |
         echo $GITHUB_ENV
         mkdir ${{env.TEMP_DIR}}
+        git diff-tree --no-commit-id --name-only -r ${{github.sha}}
+
         COMMITTED_IPYNBS=`git diff-tree --no-commit-id --name-only -r --diff-filter=ACM ${{github.sha}}`
         
         echo ${COMMITTED_IPYNBS}
