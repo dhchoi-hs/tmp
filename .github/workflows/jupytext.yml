@@ -9,14 +9,19 @@ jobs:
       TEMP_DIR: _tmp_dir
       CONVERTED_PY_FILES: 
     steps:
-    - uses: actions/checkout@v3
-    - uses: actions/setup-python@v3
+    - name: Checkout repository
+      uses: actions/checkout@v3
+      with:
+        fetch-depth: 2
+    - name: Set up python
+      uses: actions/setup-python@v3
       with:
         python-version: "3.10"
     - name: Install dependencies
       run: |
-        pip install jupytext
-        pip install pylint
+        python -m pip install --upgrade pip
+        python -m pip install jupytext
+        python -m pip install pylint
     - name: Convert committed .ipynb files to .py
       run: |
         echo $GITHUB_ENV
@@ -49,7 +54,7 @@ jobs:
         echo "CONVERTED_PY_FILES<<EOF" >> $GITHUB_ENV
         echo "${TMP_FILES}" >> $GITHUB_ENV
         echo "EOF" >> $GITHUB_ENV
-    - name: Run pylint to each converted .py files
+    - name: Lint each converted .py files
       run: |
         while read -r PY_FILE; do
           if [ ! -z "${PY_FILE}" ]
