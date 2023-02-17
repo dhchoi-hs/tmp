@@ -3,7 +3,7 @@ name: jupytext
 on: [push]
 
 jobs:
-  do:
+  lint-ipynb:
     runs-on: ubuntu-20.04
     env:
       TEMP_DIR: _tmp_dir
