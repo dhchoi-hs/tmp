@@ -24,7 +24,6 @@ jobs:
         python -m pip install pylint
     - name: Convert committed .ipynb files to .py
       run: |
-        echo $GITHUB_ENV
         mkdir ${{env.TEMP_DIR}}
 
         COMMITTED_IPYNBS=`git diff-tree --no-commit-id --name-only -r --diff-filter=ACM ${{github.sha}}`
